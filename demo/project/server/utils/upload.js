@@ -19,47 +19,47 @@ function mkdirsSync(dirname) {
   }
 }
 
-function getSuffixName( fileName ) {
+function getSuffixName(fileName) {
   let nameList = fileName.split('.')
   return nameList[nameList.length - 1]
 }
 
-function uploadPicture( ctx, options) {
+function uploadPicture(ctx, options) {
   let req = ctx.req
   let res = ctx.res
   let busboy = new Busboy({headers: req.headers})
 
   let pictureType = 'common'
-  if ( UtilType.isJSON( options ) && UtilType.isString( options.pictureType ) ) {
+  if (UtilType.isJSON(options) && UtilType.isString(options.pictureType)) {
     pictureType = options.pictureType
   }
 
   let picturePath = path.join(
-    __dirname, 
-    '/../../static/output/upload/', 
-    pictureType, 
+    __dirname,
+    '/../../static/output/upload/',
+    pictureType,
     UtilDatetime.parseStampToFormat(null, 'YYYY/MM/DD'))
 
-  console.log( path.sep, picturePath )
-  let mkdirResult = mkdirsSync( picturePath )
-  
+  console.log(path.sep, picturePath)
+  let mkdirResult = mkdirsSync(picturePath)
+
 
   return new Promise((resolve, reject) => {
-    let result = { 
+    let result = {
       success: false,
       code: '',
       message: '',
       data: null
     }
 
-    busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+    busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
       console.log('File-file [' + fieldname + ']: filename: ' + filename + ', encoding: ' + encoding + ', mimetype: ' + mimetype)
-      
+
 
       let pictureName = Math.random().toString(16).substr(2) + '.' + getSuffixName(filename)
-      let _uploadFilePath = path.join( picturePath, pictureName )
+      let _uploadFilePath = path.join(picturePath, pictureName)
       console.log(_uploadFilePath)
-      
+
       let saveTo = path.join(_uploadFilePath)
       file.pipe(fs.createWriteStream(saveTo))
 
@@ -67,7 +67,7 @@ function uploadPicture( ctx, options) {
       //   console.log('File-data [' + fieldname + '] got ' + data.length + ' bytes')
       // })
 
-      file.on('end', function() {
+      file.on('end', function () {
         console.log('File-end [' + fieldname + '] Finished')
         result.success = true
         resolve(result)
@@ -81,19 +81,19 @@ function uploadPicture( ctx, options) {
     //   console.log('Done parsing form!')
     // })
 
-    busboy.on('error', function(err) {
+    busboy.on('error', function (err) {
       console.log('File-error')
       reject(result)
     })
 
     req.pipe(busboy)
   })
-    
-} 
+
+}
 
 
-module.exports =  {
-  uploadPicture,
+module.exports = {
+  uploadPicture
 }
 
 
