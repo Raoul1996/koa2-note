@@ -12,7 +12,7 @@
   "author": "chenshenhai",
   "license": "MIT",
   "dependencies": {
-    "busboy": "^0.2.14",
+    "busboy": "^1.0.0",
     "ejs": "^2.5.7",
     "koa": "^2.3.0",
     "koa-static": "^3.0.0",
