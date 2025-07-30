@@ -12,7 +12,7 @@
   "author": "chenshenhai",
   "license": "MIT",
   "dependencies": {
-    "koa": "^2.3.0"
+    "koa": "^3.0.1"
   },
   "engines": {
     "node": ">=7.6.0",
